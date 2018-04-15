@@ -144,6 +144,12 @@ function User(socket){
 				return;
 			
 			entities[data.id] = data;
+
+			if(data.settings)
+				data.settings.multiplayerId = data.id;
+			else
+				data.settings = {multiplayerId: data.id};
+			
 			for(var playerName in users){
 				if(!users[playerName] || users[playerName] === user)
 					continue;
