@@ -218,6 +218,28 @@ function User(socket){
 			}
 		}
 	});
+	socket.on('updateEntityTarget', function(data){
+		if(!entities[data.id]){
+			console.warn("Tried to modify an not existing entity '" + data.id + "'");
+			return;
+		}
+		
+		var target = data.target;
+		if (data.target === 0) {
+			target = user.name;
+		}
+
+		entities[data.id].target = target;
+		for(var playerName in users){
+			if(!users[playerName] || users[playerName] === user)
+				continue;
+			
+			if(isOnMap(playerName, user.currentMap))
+				users[playerName].socket.updateEntityTarget(data.id, target);
+		}
+		
+		console.log('entity "' + data.id + '" now targets "' + target + '"');
+	});
 	socket.on('updateEntityHealth', function(data){
 		if(!entities[data.id]){
 			console.warn("Tried to change health of an not existing entity '" + data.id + "'");
@@ -280,6 +302,9 @@ function User(socket){
 	}
 	this.updateEntityState = function(id, state){
 		socket.emit('updateEntityState', {id: id, state: state });
+	}
+	this.updateEntityTarget = function(id, target){
+		socket.emit('updateEntityTarget', {id: id, target: target });
 	}
 	this.updateEntityHealth = function(id, hp){
 		socket.emit('updateEntityHealth', {id: id, hp: hp });
