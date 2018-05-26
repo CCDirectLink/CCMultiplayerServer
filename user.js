@@ -45,8 +45,8 @@ function User(socket){
 		return host.id === socket.id;
 	}
 	
-	socket.on('indentify', function(name){
-		console.log("[Socket] A user indentified as: " + name);
+	socket.on('identify', function(name){
+		console.log("[Socket] A user identified as: " + name);
 		if(utilities.checkIfUserExists(name)){
 			socket.emit('identified', {failed: "User already exists"});
 		}else{
@@ -77,6 +77,9 @@ function User(socket){
 
 	});
 	socket.on('changeMap', function(data){
+		if(!user)
+			return;
+
 		var name = data.name;
 		var marker = data.marker;
 		
@@ -109,6 +112,9 @@ function User(socket){
 		user.currentMap = name;
 	});
 	socket.on('updatePosition', function(pos){
+		if(!user)
+			return;
+
 		user.pos = pos;
 		for(var playerName in users){
 			if(isOnMap(playerName, user.currentMap)){
@@ -117,6 +123,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateAnimation', function(data){
+		if(!user)
+			return;
+
 		for(var playerName in users){
 			if(isOnMap(playerName, user.currentMap)){
 				users[playerName].socket.updateAnimation(user.name, data);
@@ -124,6 +133,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateAnimationTimer', function(timer){
+		if(!user)
+			return;
+
 		for(var playerName in users){
 			if(isOnMap(playerName, user.currentMap)){
 				users[playerName].socket.updateAnimationTimer(user.name, timer);
@@ -139,6 +151,9 @@ function User(socket){
 		}*/
 	});
 	socket.on('registerEntity', function(data){
+		if(!user)
+			return;
+
 		if(isHost()){
 			if(data.type !== "Enemy")
 				return;
@@ -162,6 +177,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateEntityPosition', function(data){
+		if(!user)
+			return;
+
 		if(isHost()){
 			if(!data.pos){
 				console.warn("Tried to move to undefined");
@@ -184,6 +202,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateEntityAnimation', function(data){
+		if(!user)
+			return;
+
 		if(isHost()){
 			if(!entities[data.id]){
 				console.warn("Tried to move an not existing entity '" + data.id + "'");
@@ -202,6 +223,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateEntityState', function(data){
+		if(!user)
+			return;
+
 		if(isHost()){
 			if(!entities[data.id]){
 				console.warn("Tried to move an not existing entity '" + data.id + "'");
@@ -219,6 +243,9 @@ function User(socket){
 		}
 	});
 	socket.on('updateEntityTarget', function(data){
+		if(!user)
+			return;
+
 		if(!entities[data.id]){
 			console.warn("Tried to modify an not existing entity '" + data.id + "'");
 			return;
@@ -241,6 +268,9 @@ function User(socket){
 		console.log('entity "' + data.id + '" now targets "' + target + '"');
 	});
 	socket.on('updateEntityHealth', function(data){
+		if(!user)
+			return;
+
 		if(!entities[data.id]){
 			console.warn("Tried to change health of an not existing entity '" + data.id + "'");
 			return;
@@ -258,6 +288,9 @@ function User(socket){
 		}
 	});
 	socket.on('killEntity', function(data){
+		if(!user)
+			return;
+
 		if(!entities[data.id]){
 			//console.warn("Tried to kill an not existing entity '" + data.id + "'");
 			return;
