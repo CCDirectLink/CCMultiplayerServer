@@ -56,7 +56,7 @@ app.get(/^(?!(\/media\/|\/data\/))/g, function(req, res){
 
 io.on('connection', function(socket){ new User(socket) });
 
-const port = process.env.PORT | 1423;
+const port = process.env.PORT || 1423;
 
 http.listen(port, function(){
 	console.log('listening on *:' + port);
