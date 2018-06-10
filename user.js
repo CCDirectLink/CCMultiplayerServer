@@ -69,6 +69,7 @@ function User(socket){
 			for(var id in sockets){
 				if(sockets[id]){
 					host = sockets[id];
+					host.socket.setHost(true);
 					console.log('[Socket] New host found: ' + host.id + (host.name ? (" <" + host.name + ">") : ""));
 					break;
 				}
@@ -322,6 +323,10 @@ function User(socket){
 		
 		console.log('killed entity "' + data.id + '". There are now ' + Object.keys(entities).length + ' entities registered');
 	});
+
+	this.setHost = function(isHost){
+		socket.emit('setHost', isHost);
+	}
 
 	this.updatePosition = function(playerName){
 		if(playerName != user.name){
