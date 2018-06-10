@@ -176,6 +176,21 @@ function User(socket){
 			console.log('registered enitity "' + data.type + '" with id "' + data.id + '". There are now ' + Object.keys(entities).length + ' entities registered'); 
 		}
 	});
+	socket.on('throwBall', function(data){
+		if(!user)
+			return;
+
+		if (!data.combatant)
+			data.combatant = user.name;
+
+		for(var playerName in users){
+			if(!users[playerName] || users[playerName] === user)
+				continue;
+			
+			if(isOnMap(playerName, user.currentMap))
+				users[playerName].socket.throwBall(data);
+		}
+	});
 	socket.on('updateEntityPosition', function(data){
 		if(!user)
 			return;
@@ -322,6 +337,10 @@ function User(socket){
 		if(playerName != user.name){
 			socket.emit('updateAnimationTimer', {player: playerName, timer: timer});
 		}
+	}
+	
+	this.throwBall = function(data){
+		socket.emit('throwBall', data);
 	}
 	
 	this.registerEntity = function(id, type, pos, settings){
