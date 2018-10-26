@@ -45,12 +45,14 @@ function User(socket){
 		return host.id === socket.id;
 	}
 	
-	socket.on('identify', function(name){
+	socket.on('handshake', function(data){
+		const name = data.username;
+
 		console.log("[Socket] A user identified as: " + name);
 		if(utilities.checkIfUserExists(name)){
-			socket.emit('identified', {failed: "User already exists"});
+			socket.emit('handshakeResponse', {failed: "User already exists"});
 		}else{
-			socket.emit('identified', {success: name, isHost: host.id === socket.id});
+			socket.emit('handshakeResponse', {success: true, host: host.id === socket.id, username: name, mapName: 'rookie-harbor.teleporter'});
 			user = users[name] = sockets[socket.id];
 			user.name = name;
 			onConnect();
