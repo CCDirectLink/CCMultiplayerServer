@@ -289,20 +289,25 @@ function User(socket){
 		if(!user)
 			return;
 
-		if(!entities[data.id]){
-			console.warn("Tried to change health of an not existing entity '" + data.id + "'");
-			return;
+		let id = data.id === null ? user.name : data.id;
+
+		if (data.id !== null) {
+			if(!entities[data.id]){
+				console.warn("Tried to change health of an not existing entity '" + data.id + "'");
+				return;
+			}
+			
+			entities[data.id].hp = data.hp;
 		}
 		
-		entities[data.id].hp = data.hp;
-		console.info("Set health of " + data.id + " to " + data.hp);
+		console.info("Set health of " + id + " to " + data.hp);
 
 		for(var playerName in users){
 			if(!users[playerName] || users[playerName] === user)
 				continue;
 			
 			if(isOnMap(playerName, user.currentMap))
-				users[playerName].socket.updateEntityHealth(data.id, data.hp);
+				users[playerName].socket.updateEntityHealth(id, data.hp);
 		}
 	});
 	socket.on('killEntity', function(data){
