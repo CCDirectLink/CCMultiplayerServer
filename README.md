@@ -1,5 +1,7 @@
 # CCMultiplayerServer
 
+[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)
+
 Proxy server for CCMultiplayerClient.
 
 ## Getting Started
@@ -37,7 +39,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/CCDirectLink/CCMultiplayerServer/tags). 
 
 ## Authors
 
