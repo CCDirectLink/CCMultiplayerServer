@@ -2,6 +2,6 @@
   "main": "server.js",
   "dependencies": {
     "express": "^4.16.2",
-    "socket.io": "^2.4.0"
+    "socket.io": "^2.5.0"
   }
 }
